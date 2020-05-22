@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wordpress-operator1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: wordpress-operator1
+  template:
+    metadata:
+      labels:
+        name: wordpress-operator1
+    spec:
+      serviceAccountName: wordpress-operator1
+      containers:
+        - name: wordpress-operator1
+          # Replace this with the built image name
+          image: durgaprasad444/wordpress-operator:v1
+          imagePullPolicy: Always
+          env:
+            - name: WATCH_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: OPERATOR_NAME
+              value: "wordpress-operator1"
